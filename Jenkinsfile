@@ -3,10 +3,11 @@ pipeline {
 
   environment {
     IMAGE = "roslyjamal/trend-app"
-    TAG   = "latest"
+    TAG = "latest"
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -19,24 +20,22 @@ pipeline {
       }
     }
 
-    stage('Push to DockerHub') {
+    stage('Push Image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
           sh '''
-            echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
+            echo "$PASS" | docker login -u "$USER" --password-stdin
             docker push $IMAGE:$TAG
           '''
         }
       }
     }
 
-    stage('Deploy to EKS') {
+    stage('Deploy to Kubernetes') {
       steps {
         sh '''
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
-          kubectl rollout status deployment/trend-app
-          kubectl get svc trend-service
         '''
       }
     }
