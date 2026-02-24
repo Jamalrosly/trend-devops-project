@@ -33,11 +33,13 @@ pipeline {
     }
 
     stage('Deploy to Kubernetes') {
-      steps {
-        sh '''
-          kubectl apply -f k8s/deployment.yaml --validate=false
-          kubectl apply -f k8s/service.yaml --validate=false
-        '''
+  steps {
+    sh '''
+      export AWS_SHARED_CREDENTIALS_FILE=/var/snap/jenkins/common/.aws/credentials
+      export KUBECONFIG=/var/snap/jenkins/common/.kube/config
+      kubectl apply -f k8s/deployment.yaml --validate=false
+      kubectl apply -f k8s/service.yaml --validate=false
+    '''
       }
     }
   }
