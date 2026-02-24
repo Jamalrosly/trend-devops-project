@@ -32,6 +32,12 @@ GitHub → Jenkins → Docker Build → DockerHub → Kubernetes Deploy → Load
 - Push to DockerHub
 - Deploy to Kubernetes
 
+## Application Access (Kubernetes LoadBalancer)
+The application is deployed on AWS EKS using Kubernetes LoadBalancer.
+**LoadBalancer URL:**
+  http://ac98f0b6d39f54337af69e4c074065b7-1492213178.ap-south-1.elb.amazonaws.com
+Open this URL in browser to access the application.
+
 ## Output
 Application deployed successfully using Kubernetes LoadBalancer.
 
