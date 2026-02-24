@@ -4,6 +4,7 @@ pipeline {
   environment {
     IMAGE = "roslyjamal/trend-app"
     TAG = "latest"
+    KUBECONFIG = "/var/snap/jenkins/common/.kube/config"
   }
 
   stages {
@@ -34,8 +35,8 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         sh '''
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml --validate=false
+          kubectl apply -f k8s/service.yaml --validate=false
         '''
       }
     }
